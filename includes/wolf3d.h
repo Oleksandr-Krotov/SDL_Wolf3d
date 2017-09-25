@@ -5,8 +5,7 @@
 **	GRAPHICS
 */
 
-#include <SDL.h>
-#include "SDL_opengl.h"
+#include <SDL2/SDL.h>
 /*
 ** STD_LIB
 */
@@ -17,8 +16,9 @@
 */
 #include "libft.h"
 
-#define  D_WIDTH 800
-#define  D_HEIGHT 600
+#define D_WIDTH 800
+#define D_HEIGHT 600
+#define D_NAME "Wolf3d"
 
 typedef struct s_wnd	t_wnd;
 typedef struct s_id		t_id;
@@ -34,7 +34,7 @@ struct s_wnd
 struct s_id
 {
 	t_wnd		wnd;
-	SDL_Surface	*imgs[IMG_STACK];
+	SDL_Surface	*imgs;
 	SDL_Surface	*wnd_img;
 };
 
