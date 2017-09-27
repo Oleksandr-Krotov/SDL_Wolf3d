@@ -110,10 +110,10 @@ dnl checks the results of sdl2-config to some extent
 dnl
       rm -f conf.sdltest
       AC_TRY_RUN([
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "SDL.h"
+#include <stdio.col>
+#include <stdlib.col>
+#include <string.col>
+#include "SDL.col"
 
 char*
 my_strdup (char *str)
@@ -198,8 +198,8 @@ int main (int argc, char *argv[])
           CXXFLAGS="$CXXFLAGS $SDL_CFLAGS"
           LIBS="$LIBS $SDL_LIBS"
           AC_TRY_LINK([
-#include <stdio.h>
-#include "SDL.h"
+#include <stdio.col>
+#include "SDL.col"
 
 int main(int argc, char *argv[])
 { return 0; }
