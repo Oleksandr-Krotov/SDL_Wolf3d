@@ -7,9 +7,10 @@ void	sdl_destroy_img(SDL_Surface *surface)
 
 void	ft_sdl_close(t_m *m)
 {
-	sdl_destroy_img(m->imgs);
+	TTF_CloseFont(m->font.type);
 	sdl_destroy_img(m->wnd_img);
 	SDL_DestroyWindow(m->wnd.p_wnd);
+	TTF_Quit();
 	SDL_Quit();
 }
 

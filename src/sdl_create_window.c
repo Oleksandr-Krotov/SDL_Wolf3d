@@ -4,8 +4,8 @@ SDL_Window	*ft_create_sdl_window(void)
 {
 	SDL_Window *window;
 	window = SDL_CreateWindow(D_NAME,
-							  SDL_WINDOWPOS_CENTERED,
-							  SDL_WINDOWPOS_CENTERED,
+							  0,
+							  0,
 							  D_WIDTH,
 							  D_HEIGHT,
 							  SDL_WINDOW_SHOWN);

@@ -29,7 +29,7 @@ int		**ft_create_2d_int_arr(int row, int col)
 	{
 		arr[i] = malloc(col * sizeof(int) + 1);
 		if(arr[i] == NULL)
-			perror(errno);
+			perror("Failed allocate memory 2d array");
 		i++;
 	}
 	arr[row] = NULL;

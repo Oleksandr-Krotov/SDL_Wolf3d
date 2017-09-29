@@ -10,6 +10,7 @@
 
 #define CYCLE 0
 #define EVENT 1
+#define REDRAW 2
 
-#define FLAGS 2
+#define FLAGS 3
 #endif

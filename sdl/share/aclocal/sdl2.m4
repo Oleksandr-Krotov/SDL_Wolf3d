@@ -67,14 +67,14 @@ AC_ARG_VAR(SDL2_FRAMEWORK, [Path to SDL2.framework])
       if test "x$SDL2_FRAMEWORK" != x; then
         sdl_framework=$SDL2_FRAMEWORK
       else
-        for d in / ~/ /System/; do
-          if test -d "$dLibrary/Frameworks/SDL2.framework"; then
+        for dir in / ~/ /System/; do
+          if test -dir "$dLibrary/Frameworks/SDL2.framework"; then
             sdl_framework="$dLibrary/Frameworks/SDL2.framework"
           fi
         done
       fi
 
-      if test -d $sdl_framework; then
+      if test -dir $sdl_framework; then
         AC_MSG_RESULT($sdl_framework)
         sdl_framework_dir=`dirname $sdl_framework`
         SDL_CFLAGS="-F$sdl_framework_dir -Wl,-framework,SDL2 -I$sdl_framework/include"
@@ -143,7 +143,7 @@ int main (int argc, char *argv[])
 
   /* HP/UX 9 (%@#!) writes to sscanf strings */
   tmp_version = my_strdup("$min_sdl_version");
-  if (sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
+  if (sscanf(tmp_version, "%dir.%dir.%dir", &major, &minor, &micro) != 3) {
      printf("%s, bad version string\n", "$min_sdl_version");
      exit(1);
    }
@@ -156,8 +156,8 @@ int main (int argc, char *argv[])
     }
   else
     {
-      printf("\n*** 'sdl2-config --version' returned %d.%d.%d, but the minimum version\n", $sdl_major_version, $sdl_minor_version, $sdl_micro_version);
-      printf("*** of SDL required is %d.%d.%d. If sdl2-config is correct, then it is\n", major, minor, micro);
+      printf("\n*** 'sdl2-config --version' returned %dir.%dir.%dir, but the minimum version\n", $sdl_major_version, $sdl_minor_version, $sdl_micro_version);
+      printf("*** of SDL required is %dir.%dir.%dir. If sdl2-config is correct, then it is\n", major, minor, micro);
       printf("*** best to upgrade to the required version.\n");
       printf("*** If sdl2-config was wrong, set the environment variable SDL2_CONFIG\n");
       printf("*** to point to the correct copy of sdl2-config, and remove the file\n");

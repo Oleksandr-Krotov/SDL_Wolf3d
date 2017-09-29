@@ -9,11 +9,19 @@ void	ft_init_sdl(void)
 	}
 }
 
+void	ft_ttf_init(t_m *m)
+{
+	TTF_Init();
+	m->font.path = "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf";
+	m->font.type = TTF_OpenFont(m->font.path, 16);
+	m->font.color = (SDL_Color){255, 255, 255, 0};
+}
+
 void	ft_init_player(t_m *m)
 {
 	m->p.pos.x = m->map.start.x;
 	m->p.pos.y = m->map.start.y;
-	m->p.dir.x = 1;
+	m->p.dir.x = -1;
 	m->p.dir.y = 0;
 }
 
@@ -27,10 +35,13 @@ void	ft_init_cam(t_m *m)
 void	ft_init(t_m *m)
 {
 	ft_init_sdl();
+	ft_ttf_init(m);
 	m->wnd.p_wnd = ft_create_sdl_window();
 	m->wnd_img = SDL_GetWindowSurface(m->wnd.p_wnd);
-	m->imgs = sdl_create_rgba_img(D_WIDTH, D_HEIGHT);
 	m->flags[CYCLE] = 1;
+	m->flags[REDRAW] = 1;
+	m->w = D_WIDTH;
+	m->h = D_HEIGHT;
 	ft_init_player(m);
 	ft_init_cam(m);
 	m->time.cur = 0;
