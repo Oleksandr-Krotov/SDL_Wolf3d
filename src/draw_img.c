@@ -10,8 +10,8 @@ void	ft_calc_ray_posdir(t_m *m, int x)
 
 void 	ft_init_map_pos(t_m *m)
 {
-	m->rc.map_x = (int)m->rc.pos.x;
-	m->rc.map_y = (int)m->rc.pos.y;
+	m->rc.map_x = (int)(m->rc.pos.x);
+	m->rc.map_y = (int)(m->rc.pos.y);
 }
 
 void	ft_calc_delta(t_m *m)
@@ -117,15 +117,22 @@ void	ft_draw_line(t_m *m, int x)
 {
 	int y;
 
-	y = 0;
-	while (y < m->h)
+	//FIXME block with floor and roof but with move bug!
+//	y = 0;
+//	while (y < m->h)
+//	{
+//		if (y < m->line.draw_s)
+//			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){137, 180, 249, 0});
+//		else if (y >= m->line.draw_s && y <= m->line.draw_e)
+//			ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
+//		else
+//			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){95, 100, 109, 0});
+//		y++;
+//	}
+	y = m->line.draw_s;
+	while (y <= m->line.draw_e)
 	{
-		if (y < m->line.draw_s)
-			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){137, 180, 249, 0});
-		else if (y >= m->line.draw_s && y <= m->line.draw_e)
-			ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
-		else
-			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){95, 100, 109, 0});
+		ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
 		y++;
 	}
 }

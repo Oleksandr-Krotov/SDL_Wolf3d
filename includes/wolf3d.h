@@ -107,6 +107,7 @@ struct s_draw
 	t_rgba	color;
 	int		texture;
 };
+
 struct s_time
 {
 	double cur;
@@ -120,7 +121,6 @@ struct s_font
 	SDL_Color	color;
 	char		*path;
 };
-
 
 struct s_wnd
 {
@@ -148,6 +148,10 @@ struct s_m
 int			ft_read_map(t_m *m, char *f_name);
 
 void		ft_main_loop(t_m *m);
+void		ft_move_forward(t_m *m, int mult);
+void		ft_move_back(t_m *m, int mult);
+void		ft_turn_left(t_m *m, int mult);
+void		ft_turn_right(t_m *m, int mult);
 void		ft_calc_img(t_m *m);
 
 void		ft_sdl_update_window(t_m *m);

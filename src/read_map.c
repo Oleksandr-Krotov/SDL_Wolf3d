@@ -30,9 +30,9 @@ char	*ft_get_size(t_m *m, char *src)
 void	put_valid_num(t_m *m, char *src, int *i, int *j)
 {
 	m->map.arr[*i][*j] = ft_atoi(src);
-	if ((*i == 0 || *i == m->map.row - 1) && m->map.arr[*i][*j] != 1)
+	if ((*i == 0 || *i == m->map.row - 1) && m->map.arr[*i][*j] <= 0)
 		ft_error(15);
-	if ((*j == 0 || *j == m->map.col - 1) && m->map.arr[*i][*j] != 1)
+	if ((*j == 0 || *j == m->map.col - 1) && m->map.arr[*i][*j] <= 0)
 		ft_error(16);
 	if (m->map.arr[*i][*j] == 6)
 	{
