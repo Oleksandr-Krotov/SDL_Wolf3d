@@ -52,6 +52,7 @@ void	ft_fill_arr(t_m *m, char *src)
 	int i;
 	int j;
 
+
 	i = 0;
 	j = 0;
 	while (*src != '\0')
@@ -84,4 +85,5 @@ int		ft_read_map(t_m *m, char *f_name)
 	ft_fill_arr(m, src);
 	printf("row: %dir\ncol: %dir\nstart: \n \tx: %.2f\n \ty: %.2f\n", m->map.row, m->map.row, m->map.start.x, m->map.start.x);
 	print_int_2d_arr(m->map.row, m->map.col, m->map.arr);
+	return (1);
 }

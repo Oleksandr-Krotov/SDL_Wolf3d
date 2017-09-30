@@ -59,6 +59,11 @@ struct s_map
 	int		**arr;
 };
 
+struct s_texture
+{
+	int w;
+	int h;
+};
 struct s_player
 {
 	t_v2f	pos;
@@ -107,6 +112,7 @@ struct s_draw
 	t_rgba	color;
 	int		texture;
 };
+
 
 struct s_time
 {
