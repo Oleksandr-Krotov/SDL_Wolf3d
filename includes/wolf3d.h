@@ -19,10 +19,11 @@
 typedef struct s_wnd	t_wnd;
 typedef struct s_font	t_font;
 typedef struct s_rgba	t_rgba;
+typedef struct s_txtrs	t_txtrs;
 typedef struct s_v2f	t_v2f;
 typedef struct s_v2d	t_v2d;
 typedef struct s_map	t_map;
-typedef struct s_player t_player;
+typedef struct s_player	t_player;
 typedef struct s_flags	t_flags;
 typedef struct s_cam	t_cam;
 typedef struct s_dda	t_dda;
@@ -37,6 +38,13 @@ struct s_rgba
 	Uint8		g;
 	Uint8		b;
 	Uint8		a;
+};
+
+struct s_txtrs
+{
+	int w;
+	int h;
+	Uint32 *buf[8];
 };
 
 struct s_v2f
@@ -63,6 +71,7 @@ struct s_texture
 {
 	int w;
 	int h;
+	Uint32 *buffer[TXTR_SIZE];
 };
 struct s_player
 {
@@ -110,7 +119,7 @@ struct s_draw
 	int		draw_s;
 	int		draw_e;
 	t_rgba	color;
-	int		texture;
+	int		tex_num;
 };
 
 
@@ -143,6 +152,7 @@ struct s_m
 	SDL_Surface		*imgs;
 	SDL_Surface		*wnd_img;
 	t_map			map;
+	t_txtrs			texturs;
 	t_player		p;
 	t_cam			cam;
 	t_dda			dda;
