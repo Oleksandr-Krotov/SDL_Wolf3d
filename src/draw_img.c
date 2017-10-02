@@ -72,11 +72,7 @@ void	ft_calc_wall_dist(t_m *m)
 		m->rc.wall_dist = (m->rc.map_x - m->rc.pos.x + (1 - m->rc.step_x) / 2) / m->rc.dir.x;
 	else
 		m->rc.wall_dist = (m->rc.map_y - m->rc.pos.y + (1 - m->rc.step_y) / 2) / m->rc.dir.y;
-}
 
-void	ft_calc_line_h(t_m *m)
-{
-	m->line.line_h = (int)(m->h / m->rc.wall_dist);
 }
 
 void 	ft_calc_line_start(t_m *m)
@@ -91,6 +87,34 @@ void	ft_calc_line_end(t_m *m)
 	m->line.draw_e = m->line.line_h / 2 + m->h / 2;
 	if (m->line.draw_e >= m->h)
 		m->line.draw_e = m->h - 1;
+}
+
+void	ft_get_texture_num(t_m *m)
+{
+	m->line.tex_num = m->map.arr[m->rc.map_x][m->rc.map_y] - 1;
+}
+
+void	ft_calc_line_h(t_m *m)
+{
+	m->line.line_h = (int)(m->h / m->rc.wall_dist);
+}
+
+void	ft_calc_walx(t_m *m)
+{
+	if (m->rc.side == 0)
+		m->rc.wall_x = m->rc.pos.y + m->rc.wall_dist * m->rc.dir.y;
+	else
+		m->rc.wall_x = m->rc.pos.x + m->rc.wall_dist * m->rc.dir.x;
+	m->rc.wall_x -= floor(m->rc.wall_x);
+}
+
+void	ft_calc_tex_x(t_m *m)
+{
+	m->line.tex_num = (int)(m->rc.wall_x * (double)(m->texturs.w));
+	if (m->rc.side == 0 && m->rc.dir.x > 0)
+		m->line.tex_x = m->texturs.w - m->line.tex_x - 1;
+	if (m->rc.side == 1 && m->rc.dir.y < 0)
+		m->line.tex_x = m->texturs.w - m->line.tex_x - 1;
 }
 
 void	ft_switch_color(t_m *m)
@@ -150,10 +174,13 @@ void	ft_calc_img(t_m *m)
 		ft_calc_delta(m);
 		ft_init_dda(m);
 		ft_dda(m);
+		ft_get_texture_num(m);
 		ft_calc_wall_dist(m);
 		ft_calc_line_h(m);
 		ft_calc_line_start(m);
 		ft_calc_line_end(m);
+		ft_calc_walx(m);
+		ft_calc_tex_x(m);
 		ft_switch_color(m);
 		ft_switch_color(m);
 		ft_draw_line(m, x);

@@ -120,6 +120,7 @@ struct s_draw
 	int		draw_e;
 	t_rgba	color;
 	int		tex_num;
+	int 	tex_x;
 };
 
 
