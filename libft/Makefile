@@ -29,15 +29,15 @@ ft_toupper.c ft_word_count.c ft_itoa.c ft_lstnew.c \
 ft_lstdelone.c ft_lstdel.c ft_lstadd.c ft_lstsize.c ft_lstsort.c ft_lstiter.c ft_lstmap.c \
 ft_readonedig.c ft_revstr.c ft_readonechar.c get_next_line.c
 
-OBJ = $(SOURCE:.c=.pos)
+OBJ = $(SOURCE:.c=.o)
 
 all : $(NAME)
 
 $(NAME) : $(OBJ)
 	@ar rc $(NAME) $(OBJ)
 
-%.pos : %.c
-	@gcc $(FLAGS) -c -pos $@ $< -I.
+%.o : %.c
+	@gcc $(FLAGS) -c -o $@ $< -I.
 
 clean:
 	@rm -rf $(OBJ)

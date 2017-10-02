@@ -5,14 +5,14 @@ void	ft_init_sdl(void)
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		printf("SDL could not init. SDL Err: %s\n", SDL_GetError());
-		ft_error(-1);
+		ft_error(35);
 	}
 }
 
 void	ft_ttf_init(t_m *m)
 {
 	TTF_Init();
-	m->font.path = "/usr/share/fonts/truetype/freefont/FreeSansBold.ttf";
+	m->font.path = "assets/fonts/OpenSans-SemiBold.ttf";
 	m->font.type = TTF_OpenFont(m->font.path, 16);
 	m->font.color = (SDL_Color){255, 255, 255, 0};
 }

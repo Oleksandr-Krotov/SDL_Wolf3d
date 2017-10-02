@@ -22,9 +22,9 @@ char	*ft_get_size(t_m *m, char *src)
 		ft_error(5);
 	ptr += 4;
 	if(m->map.row == 0 && m->map.col == 0)
-		ft_error(-14);
-	else
-		return (ptr);
+		ft_error(6);
+
+	return (ptr);
 }
 
 void	put_valid_num(t_m *m, char *src, int *i, int *j)
@@ -67,10 +67,10 @@ void	ft_fill_arr(t_m *m, char *src)
 		}
 	}
 	if (i != m->map.row - 1 && j != m->map.row)
-		ft_error(15);
+		ft_error(17);
 	if (m->map.start.x == -1 || m->map.start.y == -1)
 	{
-		ft_error(16);
+		ft_error(18);
 	}
 }
 
