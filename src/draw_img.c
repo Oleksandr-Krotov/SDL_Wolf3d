@@ -110,55 +110,62 @@ void	ft_calc_walx(t_m *m)
 
 void	ft_calc_tex_x(t_m *m)
 {
-	m->line.tex_num = (int)(m->rc.wall_x * (double)(m->texturs.w));
+	m->line.tex_x = (int)(m->rc.wall_x * (double)(m->texturs.w));
 	if (m->rc.side == 0 && m->rc.dir.x > 0)
 		m->line.tex_x = m->texturs.w - m->line.tex_x - 1;
 	if (m->rc.side == 1 && m->rc.dir.y < 0)
 		m->line.tex_x = m->texturs.w - m->line.tex_x - 1;
 }
 
-void	ft_switch_color(t_m *m)
-{
-	if (m->map.arr[m->rc.map_x][m->rc.map_y] == 1)
-		m->line.color = (t_rgba){150, 0, 0, 0};
-	else if (m->map.arr[m->rc.map_x][m->rc.map_y] == 2)
-		m->line.color = (t_rgba){0, 150, 0, 0};
-	else if (m->map.arr[m->rc.map_x][m->rc.map_y] == 3)
-		m->line.color = (t_rgba){0, 0, 150, 0};
-	else if (m->map.arr[m->rc.map_x][m->rc.map_y] == 4)
-		m->line.color = (t_rgba){255, 255, 255, 0};
-	else
-		m->line.color = (t_rgba){255, 0, 0, 0};
-	if (m->rc.side == 1)
-	{
-		m->line.color.r /= 2;
-		m->line.color.g /= 2;
-		m->line.color.b /= 2;
-	}
-}
+//void	ft_switch_color(t_m *m)
+//{
+//	if (m->map.arr[m->rc.map_x][m->rc.map_y] == 1)
+//		m->line.color = (t_rgba){150, 0, 0, 0};
+//	else if (m->map.arr[m->rc.map_x][m->rc.map_y] == 2)
+//		m->line.color = (t_rgba){0, 150, 0, 0};
+//	else if (m->map.arr[m->rc.map_x][m->rc.map_y] == 3)
+//		m->line.color = (t_rgba){0, 0, 150, 0};
+//	else if (m->map.arr[m->rc.map_x][m->rc.map_y] == 4)
+//		m->line.color = (t_rgba){255, 255, 255, 0};
+//	else
+//		m->line.color = (t_rgba){255, 0, 0, 0};
+//	if (m->rc.side == 1)
+//	{
+//		m->line.color.r /= 2;
+//		m->line.color.g /= 2;
+//		m->line.color.b /= 2;
+//	}
+//}
 
-void	ft_draw_line(t_m *m, int x)
-{
+void	ft_draw_line(t_m *m, int x) {
 	int y;
 
-	//FIXME block with floor and roof but with move bug!
-	y = 0;
-	while (y < m->h)
-	{
-		if (y < m->line.draw_s)
-			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){137, 180, 249, 0});
-		else if (y >= m->line.draw_s && y <= m->line.draw_e)
-			ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
-		else
-			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){95, 100, 109, 0});
-		y++;
-	}
-//	y = m->line.draw_s;
-//	while (y <= m->line.draw_e)
+//	y = 0;
+//	while (y < m->h)
 //	{
-//		ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
+//		if (y < m->line.draw_s)
+//			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){137, 180, 249, 0});
+//		else if (y >= m->line.draw_s && y <= m->line.draw_e)
+//			ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
+//		else
+//			ft_sdl_put_pixel(m->imgs, x, y, (t_rgba){95, 100, 109, 0});
 //		y++;
 //	}
+	int			d;
+	int			tex_y;
+	Uint32		color;
+
+	y = m->line.draw_s;
+	while (y < m->line.draw_e)
+	{
+		d = y * 256 - m->h * 128 + m->line.line_h * 128;
+		tex_y = ((d * m->texturs.h) / m->line.line_h) / 256;
+		color = m->texturs.buf[m->line.tex_num][m->texturs.h * tex_y + m->line.tex_x];
+		if (m->rc.side == 1)
+			color = (color >> 1) & 8355711;
+		ft_sdl_put_uint32(m->imgs, x, y, color);
+		y++;
+	}
 }
 
 void	ft_calc_img(t_m *m)
@@ -181,8 +188,7 @@ void	ft_calc_img(t_m *m)
 		ft_calc_line_end(m);
 		ft_calc_walx(m);
 		ft_calc_tex_x(m);
-		ft_switch_color(m);
-		ft_switch_color(m);
+//		ft_switch_color(m);
 		ft_draw_line(m, x);
 //		m->line.texture = m->map.arr[m->rc.map_x][m->rc.map_y] - 1;
 //		if ( m->rc.side = 0)

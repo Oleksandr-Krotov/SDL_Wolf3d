@@ -56,11 +56,28 @@ void	ft_load_texture_pack(t_txtrs *tex)
 			tex->buf[4][tex->w * y + x] = (Uint32)(256 * xorcolor);
 			tex->buf[5][tex->w * y + x] = (Uint32)(65536 * 192 * (x % 16 && y % 16));
 			tex->buf[6][tex->w * y + x] = (Uint32)(65536 * ycolor);
-			tex->buf[7][tex->w * y + x] = (Uint32)(128 + 256 + 65536 * 128);
+			tex->buf[7][tex->w * y + x] = (128 + 256 + 65536 * 128);
 			y++;
 		}
 		x++;
 	}
+}
+
+void	ft_load_texture_pack_img(t_txtrs *tex)
+{
+	SDL_Surface *barrel;
+	SDL_Surface *eagle;
+	SDL_Surface *pillar;
+	SDL_Surface *wood;
+	SDL_Surface *redbrick;
+	SDL_Surface *mossy;
+
+	barrel = IMG_Load("assets/textures/barrel.png");
+	eagle =  IMG_Load("assets/textures/eagle.png");
+	pillar = IMG_Load("assets/textures/pillar.png");
+	wood = IMG_Load("assets/textures/wood.png");
+	redbrick = IMG_Load("assets/textures/redbrick.png");
+	mossy = IMG_Load("assets/textures/mossy.png");
 }
 
 void	ft_init_textures(t_m *m)
@@ -76,7 +93,8 @@ void	ft_init_textures(t_m *m)
 		m->texturs.buf[i] = malloc(sizeof(Uint32) * TXTR_W * TXTR_H);
 		i++;
 	}
-	ft_load_texture_pack(&(m->texturs));
+//	ft_load_texture_pack(&(m->texturs));
+	ft_load_texture_pack_img(m->texturs);
 }
 
 void	ft_init(t_m *m)

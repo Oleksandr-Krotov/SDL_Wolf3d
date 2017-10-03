@@ -1,5 +1,5 @@
-#ifndef WOLDF3D_H
-# define WOLDF3D_H
+#ifndef WOLF3D_H
+# define WOLF3D_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +9,7 @@
 #include <errno.h>
 #include <SDL2/SDL.h>
 #include <SDL2_ttf/SDL_ttf.h>
+#include <SDL2_image/SDL_image.h>
 #include <math.h>
 #include <time.h>
 
@@ -44,7 +45,7 @@ struct s_txtrs
 {
 	int w;
 	int h;
-	Uint32 *buf[8];
+	Uint32 *buf[TXTR_SIZE];
 };
 
 struct s_v2f
@@ -67,12 +68,6 @@ struct s_map
 	int		**arr;
 };
 
-struct s_texture
-{
-	int w;
-	int h;
-	Uint32 *buffer[TXTR_SIZE];
-};
 struct s_player
 {
 	t_v2f	pos;
@@ -177,14 +172,16 @@ SDL_Window	*ft_create_sdl_window(void);
 SDL_Surface	*sdl_create_rgba_img(int width, int height);
 
 void		ft_sdl_event_hook(t_m *m);
-void		ft_sdl_put_pixel(SDL_Surface *img, int x, int y, t_rgba color);
 void		ft_sdl_draw_text(SDL_Surface *img, t_font font, char *str, t_v2d xy);
 void		ft_sdl_close(t_m *m);
 
-void		ft_exit(t_m *m);
-void		ft_error(int error);
+void		ft_sdl_put_uint32(SDL_Surface *img, int x, int y, Uint32 color);
+void		ft_sdl_put_pixel(SDL_Surface *img, int x, int y, t_rgba color);
 
 char		*ft_load_file(const char *f_name);
+
+void		ft_exit(t_m *m);
+void		ft_error(int error);
 
 void		ft_fps(t_m *m);
 #endif

@@ -1,8 +1,8 @@
 #ifndef DEFINE_H
 #define DEFINE_H
 
-#define DISP_W 800
-#define DISP_H 600
+#define DISP_W 1900
+#define DISP_H 1200
 #define D_NAME "Wolf3d"
 
 #define TXTR_W	64

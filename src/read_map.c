@@ -34,10 +34,11 @@ void	put_valid_num(t_m *m, char *src, int *i, int *j)
 		ft_error(15);
 	if ((*j == 0 || *j == m->map.col - 1) && m->map.arr[*i][*j] <= 0)
 		ft_error(16);
-	if (m->map.arr[*i][*j] == 6)
+	if (m->map.arr[*i][*j] == 9)
 	{
 		m->map.start.x = *j;
 		m->map.start.y = *i;
+		m->map.arr[*i][*j] = 0;
 	}
 	(*j)++;
 	if (*j == m->map.col && *i < m->map.row - 1)
