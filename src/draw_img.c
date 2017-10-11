@@ -2,7 +2,7 @@
 
 void	ft_calc_ray_posdir(t_m *m, int x)
 {
-	m->cam.camera_x = 2 * x / (double)m->imgs->w - 1;
+	m->cam.camera_x = 2 * x / (double)m->w - 1;
 	m->rc.pos = m->p.pos;
 	m->rc.dir.x = m->p.dir.x + m->cam.plane_x * m->cam.camera_x;
 	m->rc.dir.y = m->p.dir.y + m->cam.plane_y * m->cam.camera_x;
@@ -109,57 +109,69 @@ void	ft_calc_walx(t_m *m)
 
 void	ft_calc_tex_x(t_m *m)
 {
-	m->line.tex_x = (int)(m->rc.wall_x * (double)(m->texturs.w));
+	m->line.tex_x = (int)(m->rc.wall_x * (double)(m->textures.w));
 	if (m->rc.side == 0 && m->rc.dir.x > 0)
-		m->line.tex_x = m->texturs.w - m->line.tex_x - 1;
+		m->line.tex_x = m->textures.w - m->line.tex_x - 1;
 	if (m->rc.side == 1 && m->rc.dir.y < 0)
-		m->line.tex_x = m->texturs.w - m->line.tex_x - 1;
+		m->line.tex_x = m->textures.w - m->line.tex_x - 1;
 }
 
-void	sdl_get_texture_pixel(t_m *m, int y)
-{
-	int			d;
-	int			tex_y;
-	Uint8		*pixel;
-	Uint32		pix32;
+//void	sdl_get_texture_pixel(t_m *m, int y)
+//{
+//	int			d;
+//	int			tex_y;
+//	Uint8		*pixel;
+//	Uint32		pix32;
+//
+//	d = y * 256 - m->h * 128 + m->line.line_h * 128;
+//	tex_y = ((d * m->textures.h) / m->line.line_h) / 256;
+//	pixel = m->textures.buf[m->line.tex_num]->pixels;
+//	d = (tex_y * (m->textures.buf[m->line.tex_num]->pitch) + m->line.tex_x * m->textures.buf[m->line.tex_num]->format->BytesPerPixel);
+//	pix32 = *(Uint32 *)&pixel[d];
+//	SDL_GetRGBA(pix32, m->textures.buf[m->line.tex_num]->format, &m->line.color.r, &m->line.color.g, &m->line.color.b, &m->line.color.a);
+//	if (m->rc.wall_dist >= 1)
+//	{
+//		m->line.color.r /= (m->rc.wall_dist );
+//		m->line.color.g /= (m->rc.wall_dist );
+//		m->line.color.b /= (m->rc.wall_dist );
+//	}
+//	if (m->flags[FIRE])
+//	{
+//		m->line.color.r = (Uint8)((m->line.color.r * 0.7) + (200 / (m->rc.wall_dist) * 0.3));
+//		m->line.color.g = (Uint8)((m->line.color.g * 0.7) + (150 / (m->rc.wall_dist) * 0.3));
+//	}
+//}
 
-	d = y * 256 - m->h * 128 + m->line.line_h * 128;
-	tex_y = ((d * m->texturs.h) / m->line.line_h) / 256;
-	pixel = m->texturs.buf[m->line.tex_num]->pixels;
-	d = (tex_y * (m->texturs.buf[m->line.tex_num]->pitch) + m->line.tex_x * m->texturs.buf[m->line.tex_num]->format->BytesPerPixel);
-	pix32 = *(Uint32 *)&pixel[d];
-	SDL_GetRGBA(pix32, m->texturs.buf[m->line.tex_num]->format, &m->line.color.r, &m->line.color.g, &m->line.color.b, &m->line.color.a);
-	if (m->rc.wall_dist >= 1)
-	{
-		m->line.color.r /= (m->rc.wall_dist );
-		m->line.color.g /= (m->rc.wall_dist );
-		m->line.color.b /= (m->rc.wall_dist );
-	}
-	if (m->flags[FIRE])
-	{
-		m->line.color.r = (Uint8)((m->line.color.r * 0.7) + (200 / (m->rc.wall_dist) * 0.3));
-		m->line.color.g = (Uint8)((m->line.color.g * 0.7) + (120 / (m->rc.wall_dist) * 0.3));
-	}
+SDL_Rect	ft_sdl_set_rect(int w, int h, int x, int y)
+{
+	SDL_Rect ret;
+
+	ret.w = w;
+	ret.h = h;
+	ret.x = x;
+	ret.y = y;
+	return (ret);
 }
 
 void	ft_draw_line(t_m *m, int x)
 {
-	int	y;
+	SDL_Rect tx_line_rect;
+	SDL_Rect wnd_rect;
 
-	y = 0;
-	while (y < m->h)
-	{
-		if (y > m->line.draw_s && y < m->line.draw_e)
-		{
-			sdl_get_texture_pixel(m, y);
-			ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
-		}
-		else if (y < m->line.draw_s)
-			ft_sdl_put_pixel(m->imgs, x, y, (SDL_Color){45 , 45 , 45, 255});
-		else
-			ft_sdl_put_pixel(m->imgs, x, y, (SDL_Color){45, 45, 45, 255});
-		y++;
-	}
+	tx_line_rect = ft_sdl_set_rect(1, 64, m->line.tex_x, 0);
+	wnd_rect = ft_sdl_set_rect(1, m->line.draw_e - m->line.draw_s, x, m->line.draw_s);
+	SDL_RenderCopy(m->wnd.p_rend, m->textures.buf[m->line.tex_num], &tx_line_rect, &wnd_rect);
+//	y = 0;
+//	while (y < m->h)
+//	{
+//		if (y > m->line.draw_s && y < m->line.draw_e)
+//		{
+//			sdl_get_texture_pixel(m, y);
+//			ft_sdl_put_pixel(m->imgs, x, y, m->line.color);
+//		}
+//		else ft_sdl_put_pixel(m->imgs, x, y, (SDL_Color){45, 45, 45, 255});
+//		y++;
+//	}
 }
 
 void	ft_calc_img(t_m *m)
@@ -167,22 +179,22 @@ void	ft_calc_img(t_m *m)
 	int		x;
 
 	x = 0;
-	while (x < m->imgs->w)
-	{
-		m->rc.hit = 0;
-		ft_calc_ray_posdir(m, x);
-		ft_init_map_pos(m);
-		ft_calc_delta(m);
-		ft_init_dda(m);
-		ft_dda(m);
-		ft_get_texture_num(m);
-		ft_calc_wall_dist(m);
-		ft_calc_line_h(m);
-		ft_calc_line_start(m);
-		ft_calc_line_end(m);
-		ft_calc_walx(m);
-		ft_calc_tex_x(m);
-		ft_draw_line(m, x);
-		x++;
+	while (x < m->w)
+		{
+			m->rc.hit = 0;
+			ft_calc_ray_posdir(m, x);
+			ft_init_map_pos(m);
+			ft_calc_delta(m);
+			ft_init_dda(m);
+			ft_dda(m);
+			ft_get_texture_num(m);
+			ft_calc_wall_dist(m);
+			ft_calc_line_h(m);
+			ft_calc_line_start(m);
+			ft_calc_line_end(m);
+			ft_calc_walx(m);
+			ft_calc_tex_x(m);
+			ft_draw_line(m, x);
+			x++;
 	}
 }

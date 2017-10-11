@@ -2,7 +2,7 @@
 
 void	ft_init_sdl(void)
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("SDL could not init. SDL Err: %s\n", SDL_GetError());
 		ft_error(2);
@@ -34,30 +34,30 @@ void	ft_init_cam(t_m *m)
 
 void	ft_load_texture_pack_img(t_m *m)
 {
-	if((m->texturs.buf[0] = IMG_Load("assets/textures/eagle.png")) == NULL)
+	if((m->textures.buf[0] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/eagle.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[1] = IMG_Load("assets/textures/redbrick.png")) == NULL)
+	if((m->textures.buf[1] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/redbrick.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[2] = IMG_Load("assets/textures/purplestone.png")) == NULL)
+	if((m->textures.buf[2] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/purplestone.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[3] = IMG_Load("assets/textures/greystone.png")) == NULL)
+	if((m->textures.buf[3] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/greystone.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[4] = IMG_Load("assets/textures/bluestone.png")) == NULL)
+	if((m->textures.buf[4] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/bluestone.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[5] = IMG_Load("assets/textures/mossy.png")) == NULL)
+	if((m->textures.buf[5] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/mossy.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[6] = IMG_Load("assets/textures/wood.png")) == NULL)
+	if((m->textures.buf[6] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/wood.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[7] = IMG_Load("assets/textures/colorstone.png")) == NULL)
+	if((m->textures.buf[7] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/colorstone.png")) == NULL)
 		ft_error(5);
-	if((m->texturs.buf[8] = IMG_Load("assets/textures/crash.png")) == NULL)
+	if((m->textures.buf[8] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/crash.png")) == NULL)
 		ft_error(5);
 }
 
 void	ft_init_textures(t_m *m)
 {
-	m->texturs.w = TXTR_W;
-	m->texturs.h = TXTR_H;
+	m->textures.w = TXTR_W;
+	m->textures.h = TXTR_H;
 	ft_load_texture_pack_img(m);
 }
 
@@ -65,9 +65,8 @@ void	ft_init(t_m *m)
 {
 	ft_init_sdl();
 	ft_ttf_init(m);
-	m->wnd.p_wnd = ft_create_sdl_window();
-	if((m->wnd_img = SDL_GetWindowSurface(m->wnd.p_wnd)) == NULL)
-		ft_error(4);
+	if (SDL_CreateWindowAndRenderer(DISP_W, DISP_H, SDL_WINDOW_RESIZABLE, &m->wnd.p_wnd, &m->wnd.p_rend))
+		ft_error(3);
 	m->flags[CYCLE] = 1;
 	m->flags[REDRAW] = 1;
 	m->flags[FIRE] = 0;

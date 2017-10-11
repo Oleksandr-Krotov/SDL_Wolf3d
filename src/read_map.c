@@ -89,7 +89,7 @@ int		ft_read_map(t_m *m, char *f_name)
 	m->map.arr = ft_create_2d_int_arr(m->map.row, m->map.col);
 	ft_bzero_2d_arr(m->map.row, m->map.col, m->map.arr);
 	ft_fill_arr(m, src);
-	printf("row: %dir\ncol: %dir\nstart: \n \tx: %.2f\n \ty: %.2f\n", m->map.row, m->map.row, m->map.start.x, m->map.start.y);
+	printf("row: %d\ncol: %d\nstart: \n \tx: %.2f\n \ty: %.2f\n", m->map.row, m->map.row, m->map.start.x, m->map.start.y);
 	print_int_2d_arr(m->map.row, m->map.col, m->map.arr);
 	return (1);
 }

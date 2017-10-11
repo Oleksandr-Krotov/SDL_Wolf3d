@@ -7,7 +7,7 @@ void	ft_error(int error)
 	else if (error == 2)
 		perror("Failed initialisation SDL\n");
 	else if (error == 3)
-		perror("Failed create SDL_Window\n");
+		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Culdn't create window and renderer");
 	else if (error == 4)
 		perror("Failed init SDL_surface\n");
 	else if (error == 5)

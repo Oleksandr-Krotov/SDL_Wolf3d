@@ -8,7 +8,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <SDL2/SDL.h>
-#if __APLE__
+#if __APPLE__
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
 #else
@@ -49,7 +49,7 @@ struct s_txtrs
 {
 	int w;
 	int h;
-	SDL_Surface *buf[TXTR_SIZE + 1];
+	SDL_Texture *buf[TXTR_SIZE + 1];
 };
 
 struct s_v2f
@@ -139,7 +139,8 @@ struct s_font
 
 struct s_wnd
 {
-	SDL_Window	*p_wnd;
+	SDL_Window		*p_wnd;
+	SDL_Renderer	*p_rend;
 };
 
 struct s_m
@@ -149,10 +150,8 @@ struct s_m
 	int				h;
 	t_wnd			wnd;
 	t_font			font;
-	SDL_Surface		*imgs;
-	SDL_Surface		*wnd_img;
 	t_map			map;
-	t_txtrs			texturs;
+	t_txtrs			textures;
 	t_player		p;
 	t_cam			cam;
 	t_dda			dda;
