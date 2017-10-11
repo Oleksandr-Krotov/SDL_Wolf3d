@@ -8,8 +8,13 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <SDL2/SDL.h>
+#if __APLE__
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
+#else
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#endif
 #include <math.h>
 #include <time.h>
 
@@ -19,7 +24,7 @@
 
 typedef struct s_wnd	t_wnd;
 typedef struct s_font	t_font;
-typedef struct s_rgba	t_rgba;
+typedef struct s_rgb	t_rgb;
 typedef struct s_txtrs	t_txtrs;
 typedef struct s_v2f	t_v2f;
 typedef struct s_v2d	t_v2d;
@@ -33,19 +38,18 @@ typedef struct s_rc		t_rc;
 typedef struct s_draw	t_draw;
 typedef struct s_m		t_m;
 
-struct s_rgba
+struct s_rgb
 {
 	Uint8		r;
 	Uint8		g;
 	Uint8		b;
-	Uint8		a;
 };
 
 struct s_txtrs
 {
 	int w;
 	int h;
-	Uint32 *buf[TXTR_SIZE];
+	SDL_Surface *buf[TXTR_SIZE + 1];
 };
 
 struct s_v2f
@@ -110,12 +114,12 @@ struct s_rc
 
 struct s_draw
 {
-	int		line_h;
-	int		draw_s;
-	int		draw_e;
-	t_rgba	color;
-	int		tex_num;
-	int 	tex_x;
+	int			line_h;
+	int			draw_s;
+	int			draw_e;
+	int			tex_num;
+	int 		tex_x;
+	SDL_Color	color;
 };
 
 
@@ -176,8 +180,7 @@ void		ft_sdl_draw_text(SDL_Surface *img, t_font font, char *str, t_v2d xy);
 void		ft_sdl_close(t_m *m);
 
 void		ft_sdl_put_uint32(SDL_Surface *img, int x, int y, Uint32 color);
-void		ft_sdl_put_pixel(SDL_Surface *img, int x, int y, t_rgba color);
-
+void		ft_sdl_put_pixel(SDL_Surface *img, int x, int y, SDL_Color color);
 char		*ft_load_file(const char *f_name);
 
 void		ft_exit(t_m *m);

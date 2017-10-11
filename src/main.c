@@ -5,7 +5,7 @@ void	ft_init_sdl(void)
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		printf("SDL could not init. SDL Err: %s\n", SDL_GetError());
-		ft_error(35);
+		ft_error(2);
 	}
 }
 
@@ -19,8 +19,8 @@ void	ft_ttf_init(t_m *m)
 
 void	ft_init_player(t_m *m)
 {
-	m->p.pos.x = m->map.start.x;
-	m->p.pos.y = m->map.start.y;
+	m->p.pos.y = m->map.start.x;
+	m->p.pos.x = m->map.start.y;
 	m->p.dir.x = -1;
 	m->p.dir.y = 0;
 }
@@ -32,69 +32,33 @@ void	ft_init_cam(t_m *m)
 	m->cam.camera_x = 0;
 }
 
-void	ft_load_texture_pack(t_txtrs *tex)
+void	ft_load_texture_pack_img(t_m *m)
 {
-	int x;
-	int y;
-	int xorcolor;
-	int ycolor;
-	int xycolor;
-
-	x = 0;
-	while (x < tex->w)
-	{
-		y = 0;
-		while (y < tex->h)
-		{
-			xorcolor = (x * 256/ tex->w) ^ (y * 256 / tex->h);
-			ycolor = y * 256 / tex->w;
-			xycolor = y * 128 / tex->h + x * 128 / tex->w;
-			tex->buf[0][tex->w * y + x] = (Uint32)(655336 * 254 * (x != y && x != tex->w - y));
-			tex->buf[1][tex->w * y + x] = (Uint32)(xycolor + 256 * xycolor + 65536 * xycolor);
-			tex->buf[2][tex->w * y + x] = (Uint32)(256 * xycolor + 65536 * xycolor);
-			tex->buf[3][tex->w * y + x] = (Uint32)(xorcolor + 256 * xorcolor + 65536 * xorcolor);
-			tex->buf[4][tex->w * y + x] = (Uint32)(256 * xorcolor);
-			tex->buf[5][tex->w * y + x] = (Uint32)(65536 * 192 * (x % 16 && y % 16));
-			tex->buf[6][tex->w * y + x] = (Uint32)(65536 * ycolor);
-			tex->buf[7][tex->w * y + x] = (128 + 256 + 65536 * 128);
-			y++;
-		}
-		x++;
-	}
-}
-
-void	ft_load_texture_pack_img(t_txtrs *tex)
-{
-	SDL_Surface *barrel;
-	SDL_Surface *eagle;
-	SDL_Surface *pillar;
-	SDL_Surface *wood;
-	SDL_Surface *redbrick;
-	SDL_Surface *mossy;
-
-	barrel = IMG_Load("assets/textures/barrel.png");
-	eagle =  IMG_Load("assets/textures/eagle.png");
-	pillar = IMG_Load("assets/textures/pillar.png");
-	wood = IMG_Load("assets/textures/wood.png");
-	redbrick = IMG_Load("assets/textures/redbrick.png");
-	mossy = IMG_Load("assets/textures/mossy.png");
+	if((m->texturs.buf[0] = IMG_Load("assets/textures/eagle.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[1] = IMG_Load("assets/textures/redbrick.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[2] = IMG_Load("assets/textures/purplestone.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[3] = IMG_Load("assets/textures/greystone.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[4] = IMG_Load("assets/textures/bluestone.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[5] = IMG_Load("assets/textures/mossy.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[6] = IMG_Load("assets/textures/wood.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[7] = IMG_Load("assets/textures/colorstone.png")) == NULL)
+		ft_error(5);
+	if((m->texturs.buf[8] = IMG_Load("assets/textures/crash.png")) == NULL)
+		ft_error(5);
 }
 
 void	ft_init_textures(t_m *m)
 {
-	int i;
-
 	m->texturs.w = TXTR_W;
 	m->texturs.h = TXTR_H;
-	i = 0;
-	while (i < TXTR_SIZE)
-	{
-
-		m->texturs.buf[i] = malloc(sizeof(Uint32) * TXTR_W * TXTR_H);
-		i++;
-	}
-//	ft_load_texture_pack(&(m->texturs));
-	ft_load_texture_pack_img(m->texturs);
+	ft_load_texture_pack_img(m);
 }
 
 void	ft_init(t_m *m)
@@ -102,9 +66,11 @@ void	ft_init(t_m *m)
 	ft_init_sdl();
 	ft_ttf_init(m);
 	m->wnd.p_wnd = ft_create_sdl_window();
-	m->wnd_img = SDL_GetWindowSurface(m->wnd.p_wnd);
+	if((m->wnd_img = SDL_GetWindowSurface(m->wnd.p_wnd)) == NULL)
+		ft_error(4);
 	m->flags[CYCLE] = 1;
 	m->flags[REDRAW] = 1;
+	m->flags[FIRE] = 0;
 	m->w = DISP_W;
 	m->h = DISP_H;
 	ft_init_textures(m);
@@ -118,6 +84,8 @@ int		main(int argc, char **argv)
 {
 	t_m	m;
 
+	if (argc != 2)
+		ft_error(1);
 	m.map.start.x = -1;
 	m.map.start.y = -1;
 	ft_read_map(&m, argv[1]);

@@ -10,10 +10,7 @@ SDL_Window	*ft_create_sdl_window(void)
 							  DISP_H,
 							  SDL_WINDOW_SHOWN);
 	if (window == NULL)
-	{
-		printf("Window could not create. SDL Err: %s\n", SDL_GetError());
-		ft_error(2);
-	}
+		ft_error(3);
 	return (window);
 }
 
