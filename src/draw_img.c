@@ -116,48 +116,20 @@ void	ft_calc_tex_x(t_m *m)
 		m->line.tex_x = m->textures.w - m->line.tex_x - 1;
 }
 
-//void	sdl_get_texture_pixel(t_m *m, int y)
-//{
 //	int			d;
 //	int			tex_y;
-//	Uint8		*pixel;
-//	Uint32		pix32;
-//
 //	d = y * 256 - m->h * 128 + m->line.line_h * 128;
 //	tex_y = ((d * m->textures.h) / m->line.line_h) / 256;
-//	pixel = m->textures.buf[m->line.tex_num]->pixels;
-//	d = (tex_y * (m->textures.buf[m->line.tex_num]->pitch) + m->line.tex_x * m->textures.buf[m->line.tex_num]->format->BytesPerPixel);
-//	pix32 = *(Uint32 *)&pixel[d];
-//	SDL_GetRGBA(pix32, m->textures.buf[m->line.tex_num]->format, &m->line.color.r, &m->line.color.g, &m->line.color.b, &m->line.color.a);
-//	if (m->rc.wall_dist >= 1)
-//	{
-//		m->line.color.r /= (m->rc.wall_dist );
-//		m->line.color.g /= (m->rc.wall_dist );
-//		m->line.color.b /= (m->rc.wall_dist );
-//	}
-//	if (m->flags[FIRE])
-//	{
-//		m->line.color.r = (Uint8)((m->line.color.r * 0.7) + (200 / (m->rc.wall_dist) * 0.3));
-//		m->line.color.g = (Uint8)((m->line.color.g * 0.7) + (150 / (m->rc.wall_dist) * 0.3));
-//	}
-//}
-
-SDL_Rect	ft_sdl_set_rect(int w, int h, int x, int y)
-{
-	SDL_Rect ret;
-
-	ret.w = w;
-	ret.h = h;
-	ret.x = x;
-	ret.y = y;
-	return (ret);
-}
 
 void	ft_draw_line(t_m *m, int x)
 {
 	SDL_Rect tx_line_rect;
 	SDL_Rect wnd_rect;
 
+	if (!m->flags[FIRE])
+		SDL_SetTextureColorMod(m->textures.buf[m->line.tex_num], 50 / m->rc.wall_dist, 50 / m->rc.wall_dist, 50 / m->rc.wall_dist);
+	else
+		SDL_SetTextureColorMod(m->textures.buf[m->line.tex_num], 200 / m->rc.wall_dist, 155 / m->rc.wall_dist, 70 / m->rc.wall_dist);
 	tx_line_rect = ft_sdl_set_rect(1, 64, m->line.tex_x, 0);
 	wnd_rect = ft_sdl_set_rect(1, m->line.draw_e - m->line.draw_s, x, m->line.draw_s);
 	SDL_RenderCopy(m->wnd.p_rend, m->textures.buf[m->line.tex_num], &tx_line_rect, &wnd_rect);

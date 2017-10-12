@@ -25,6 +25,11 @@ void	ft_sdl_event_hook(t_m *m)
 		ft_turn_left(m, mult);
 	if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_D])
 		ft_turn_right(m, mult);
+	if (state[SDL_SCANCODE_1])
+		m->flags[FIRE] = 1;
+	if (state[SDL_SCANCODE_2])
+		m->flags[FIRE] = 0;
+	printf("map[%f][%f]: %d\n", m->p.pos.x, m->p.pos.y, m->map.arr[(int)(m->p.pos.x)][(int)m->p.pos.y]);
 	m->flags[REDRAW] = 1;
 //		else if (wnd_event.type == SDL_KEYDOWN)
 //		{

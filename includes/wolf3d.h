@@ -14,6 +14,7 @@
 #else
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
+#include <SDL/SDL_mixer.h>
 #endif
 #include <math.h>
 #include <time.h>
@@ -29,6 +30,7 @@ typedef struct s_txtrs	t_txtrs;
 typedef struct s_v2f	t_v2f;
 typedef struct s_v2d	t_v2d;
 typedef struct s_map	t_map;
+typedef struct s_arm	t_arm;
 typedef struct s_player	t_player;
 typedef struct s_flags	t_flags;
 typedef struct s_cam	t_cam;
@@ -36,6 +38,7 @@ typedef struct s_dda	t_dda;
 typedef struct s_time	t_time;
 typedef struct s_rc		t_rc;
 typedef struct s_draw	t_draw;
+typedef struct s_audio	t_audio;
 typedef struct s_m		t_m;
 
 struct s_rgb
@@ -72,10 +75,16 @@ struct s_map
 	int		**arr;
 };
 
+struct s_arm
+{
+	int			status;
+	SDL_Texture	*texture;
+};
 struct s_player
 {
 	t_v2f	pos;
 	t_v2f	dir;
+	t_arm	arm[OUTFIT];
 	double	old_x;
 	double	ms;
 	double	rs;
@@ -143,6 +152,13 @@ struct s_wnd
 	SDL_Renderer	*p_rend;
 };
 
+struct s_audio
+{
+	Uint32	length;
+	Uint8	*buf;
+	Mix_Chunk *bg;
+	Mix_Music *music;
+};
 struct s_m
 {
 	int				flags[FLAGS];
@@ -158,6 +174,8 @@ struct s_m
 	t_rc			rc;
 	t_draw			line;
 	t_time			time;
+	SDL_Texture     *scream;
+	t_audio			music;
 };
 
 int			ft_read_map(t_m *m, char *f_name);
@@ -180,6 +198,7 @@ void		ft_sdl_close(t_m *m);
 
 void		ft_sdl_put_uint32(SDL_Surface *img, int x, int y, Uint32 color);
 void		ft_sdl_put_pixel(SDL_Surface *img, int x, int y, SDL_Color color);
+SDL_Rect	ft_sdl_set_rect(int w, int h, int x, int y);
 char		*ft_load_file(const char *f_name);
 
 void		ft_exit(t_m *m);

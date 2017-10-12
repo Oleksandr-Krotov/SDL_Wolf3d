@@ -8,7 +8,7 @@ set(SOURCE_FILES src/main.c src/error.c src/sdl_put_pixel.c src/sdl_event_hook.c
     src/exit.c src/sdl_close.c src/main_loop.c src/sdl_create_rgba_image.c
     src/sdl_update_window.c src/draw_img.c src/sdl_create_window.c
         src/read_map.c src/read_file.c src/arr_2d.c includes/arr_2d.h src/fps.c
-    src/sdl_put_text.c src/calc_all.c includes/wolf3d.h includes/define.h includes/libft.h src/sdl_uint32_to_color.c src/test_texture.c)
+    src/sdl_put_text.c src/calc_all.c includes/wolf3d.h includes/define.h includes/libft.h src/sdl_uint32_to_color.c src/test_texture.c src/sdl_set_rect.c)
 add_executable(Wolf3d ${SOURCE_FILES})
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -30,7 +30,7 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     target_link_libraries(Wolf3d ${SDL2_IMAGE_LIBRARY})
 elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     message("Linux!!!")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lSDL2 -lSDL2_ttf -lSDL2_image -lm")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -lSDL2 -lSDL2_ttf -lSDL2_image -lSDL_mixer -lm")
 endif()
 
 target_link_libraries(Wolf3d ${CMAKE_SOURCE_DIR}/libft/libft.a)
