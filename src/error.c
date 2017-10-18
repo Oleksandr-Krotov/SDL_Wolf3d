@@ -15,11 +15,11 @@ void	ft_error(int error)
 	else if (error == 6)
 		perror("Can't read this map!\n");
 	else if (error == 7)
-		perror("Can't find map width! Example: \"W: n\"\n");
+		perror("Bad map width! Example: \"W:10\"\n");
 	else if (error == 8)
-		perror("Can't find map height! Example: \"H: n\"\n");
+		perror("Bad map height! Example: \"H:10\"\n");
 	else if (error == 9)
-		perror("Cant't find map start! Example: \"Map: \"\n");
+		perror("Cant't find map start_y! Example: \"Map: \"\n");
 	else if (error == 10)
 		perror("Empty map!\n");
 	else if (error == 11)
@@ -32,5 +32,7 @@ void	ft_error(int error)
 		perror("SDL can't update window!!!\n");
 	else if (error == 15)
 		perror("Start position at the edges of map!\n");
+	else if (error == 16)
+		perror("Map size more than 1000\n");
 	exit(error);
 }

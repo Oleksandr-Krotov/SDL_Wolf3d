@@ -11,12 +11,22 @@ char	*ft_get_size(t_m *m, char *src)
 	if (ptr == NULL)
 		ft_error(7);
 	ptr += 2;
-	m->map.col = ft_atoi(ptr);
+	if (ft_isdigit(*ptr))
+		m->map.col = ft_atoi(ptr);
+	else
+		ft_error(7);
+	if (m->map.col > 1000)
+		ft_error(16);
 	ptr = ft_strstr(ptr, "H:");
 	if (ptr == NULL)
 		ft_error(8);
 	ptr += 2;
-	m->map.row = ft_atoi(ptr);
+	if (ft_isdigit(*ptr))
+		m->map.row = ft_atoi(ptr);
+	else
+		ft_error(8);
+	if (m->map.row > 1000)
+		ft_error(16);
 	ptr = ft_strstr(ptr, "Map:");
 	if (ptr == NULL)
 		ft_error(9);
@@ -84,6 +94,8 @@ int		ft_read_map(t_m *m, char *f_name)
 {
 	char *src;
 
+	m->map.start.x = -1;
+	m->map.start.y = -1;
 	src = ft_load_file(f_name);
 	src = ft_get_size(m, src);
 	m->map.arr = ft_create_2d_int_arr(m->map.row, m->map.col);

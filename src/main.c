@@ -2,7 +2,7 @@
 
 void	ft_init_sdl(void)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
 	{
 		printf("SDL could not init. SDL Err: %s\n", SDL_GetError());
 		ft_error(2);
@@ -13,7 +13,7 @@ void	ft_ttf_init(t_m *m)
 {
 	TTF_Init();
 	m->font.path = "assets/fonts/OpenSans-SemiBold.ttf";
-	m->font.type = TTF_OpenFont(m->font.path, 16);
+	m->font.type = TTF_OpenFont(m->font.path, 15);
 	m->font.color = (SDL_Color){255, 255, 255, 0};
 }
 
@@ -25,7 +25,14 @@ void	ft_init_player(t_m *m)
 	m->p.dir.y = 0;
 	if((m->p.arm[TORCH].texture = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/torch.png")) == NULL)
 		ft_error(5);
-	m->p.arm[TORCH].status = 0;
+	m->p.hp = 100;
+}
+
+void	ft_init_torch(t_m *m)
+{
+	m->torch.status = TRUE;
+	m->torch.hp = 100;
+	m->torch.count = 0;
 }
 
 void	ft_init_cam(t_m *m)
@@ -37,66 +44,112 @@ void	ft_init_cam(t_m *m)
 
 void	ft_load_texture_pack_img(t_m *m)
 {
-	if((m->textures.buf[0] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/eagle.png")) == NULL)
+	if ((m->tex.buf[0] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/DarkMoss256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[1] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/redbrick.png")) == NULL)
+	if ((m->tex.buf[1] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/FenStone_256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[2] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/purplestone.png")) == NULL)
+	if ((m->tex.buf[2] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/green_brk256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[3] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/greystone.png")) == NULL)
+	if ((m->tex.buf[3] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/green_brk2_256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[4] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/bluestone.png")) == NULL)
+	if ((m->tex.buf[4] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/Clover256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[5] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/mossy.png")) == NULL)
+	if ((m->tex.buf[5] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/Hedge256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[6] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/wood.png")) == NULL)
+	if ((m->tex.buf[6] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/IvyWall256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[7] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/colorstone.png")) == NULL)
+	if ((m->tex.buf[7] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/MossyRock256.png")) == NULL)
 		ft_error(5);
-	if((m->textures.buf[8] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/crash.png")) == NULL)
+	if ((m->tex.buf[8] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/colonit.png")) == NULL)
 		ft_error(5);
-	if((m->scream = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/scream.png")) == NULL)
+	if ((m->tex.buf[9] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/Vanguard.png")) == NULL)
+		ft_error(5);
+	if ((m->tex.buf[10] = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/drop.png")) == NULL)
+		ft_error(5);
+	if ((m->scream = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/scream.png")) == NULL)
+		ft_error(5);
+	if ((m->crash = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/crash.png")) == NULL)
+		ft_error(5);
+	if ((m->torch.rope = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/rope2.png")) == NULL)
+		ft_error(5);
+	if ((m->torch.spark = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/spark.png")) == NULL)
+		ft_error(5);
+	if ((m->p.heart = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/hp.png")) == NULL)
+		ft_error(5);
+	if ((m->p.wound = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/wound.png")) == NULL)
+		ft_error(5);
+	if ((m->p.die = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/die.png")) == NULL)
 		ft_error(5);
 }
 
 void	ft_init_textures(t_m *m)
 {
-	m->textures.w = TXTR_W;
-	m->textures.h = TXTR_H;
+	m->tex.w = TXTR_W;
+	m->tex.h = TXTR_H;
+	m->tex.half = m->tex.w / 2;
 	ft_load_texture_pack_img(m);
+}
+
+void	ft_init_sprite(t_m *m)
+{
+	m->sprite.in[0] = (t_sprite_in){6.5, 5.5, 8, 1, 1, 0, 1};
+	m->sprite.in[1] = (t_sprite_in){5.5, 2.5, 9, 1, 1, 0, 1};
+	m->sprite.in[2] = (t_sprite_in){4.5, 2.5, 10, 3, 3, 256, 1};
+	if ((m->scream = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/scream.png")) == NULL)
+		ft_error(5);
+}
+
+
+void	ft_init_sound(t_m *m)
+{
+	if (Mix_Init(MIX_INIT_MP3 | MIX_INIT_MOD | MIX_INIT_OGG) == NULL)
+		SDL_Log("Couldn't init Mixer");
+	if (Mix_OpenAudio(44100, AUDIO_S16, 2, 4096 ) < 0)
+		SDL_Log("Couldn't init Mixer!\n");
+	m->music.audio = Mix_LoadMUS("assets/sounds/Psycho.mp3");
+	m->music.screamer = Mix_LoadWAV("assets/sounds/scream.wav");
+	m->music.wound = Mix_LoadWAV("assets/sounds/wound.wav");
+	if (m->music.audio == NULL)
+	{
+		fprintf(stderr, "Couldn't load 1.mp3: %s\n",
+				SDL_GetError());
+		ft_exit(m);
+	}
+	m->music.volume = MIX_MAX_VOLUME / 4;
+	m->music.status = 0;
+	Mix_VolumeMusic(m->music.volume);
 }
 
 void	ft_init(t_m *m)
 {
 	ft_init_sdl();
+	ft_init_sound(m);
 	ft_ttf_init(m);
-	if (SDL_CreateWindowAndRenderer(DISP_W, DISP_H, SDL_WINDOW_RESIZABLE, &m->wnd.p_wnd, &m->wnd.p_rend))
+	if (SDL_CreateWindowAndRenderer(DISP_W, DISP_H, SDL_WINDOW_RESIZABLE , &m->wnd.p_wnd, &m->wnd.p_rend) < 0)
 		ft_error(3);
-	if( Mix_OpenAudio( 22050, MIX_DEFAULT_FORMAT, 2, 4096 ) == -1 )
-		SDL_Log("Culd't init Mixer!\n");
-	m->flags[CYCLE] = 1;
-	m->flags[REDRAW] = 1;
-	m->flags[FIRE] = 1;
-	m->flags[SCREAM] = 1;
-	m->w = DISP_W;
-	m->h = DISP_H;
+	m->flags[GAME] = START;
+	m->flags[REDRAW] = TRUE;
+//	m->flags[FIRE] = FALSE;
+	m->flags[SCREAM] = TRUE;
+	m->wnd.w = DISP_W;
+	m->wnd.h = DISP_H;
+	m->wnd.old_w = m->wnd.w;
+	m->sprite.zbuff = malloc(sizeof(double) * m->wnd.w);
 	ft_init_textures(m);
+	ft_init_sprite(m);
 	ft_init_player(m);
+	ft_init_torch(m);
 	ft_init_cam(m);
 	m->time.cur = 0;
 	m->time.old = 0;
-	m->music.bg = Mix_LoadWAV("assets/h3f.wav");
 	SDL_PauseAudio(0);
 }
 
-int		main(int argc, char **argv)
+int		main(int argc, char *argv[])
 {
 	t_m	m;
-
 	if (argc != 2)
 		ft_error(1);
-	m.map.start.x = -1;
-	m.map.start.y = -1;
 	ft_read_map(&m, argv[1]);
 	ft_init(&m);
 	ft_main_loop(&m);

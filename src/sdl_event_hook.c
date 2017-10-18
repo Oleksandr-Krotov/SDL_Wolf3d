@@ -10,11 +10,11 @@ void	ft_sdl_event_hook(t_m *m)
 	if (SDL_PollEvent(&wnd_event))
 	{
 		if (wnd_event.type == SDL_QUIT)
-			m->flags[CYCLE] = 0;
+			m->flags[GAME] = EXIT;
 	}
 	mult = 1;
 	if (state[SDL_SCANCODE_ESCAPE])
-		m->flags[CYCLE] = 0;
+		m->flags[GAME] = EXIT;
 	if (state[SDL_SCANCODE_LSHIFT])
 		mult = 2;
 	if (state[SDL_SCANCODE_UP] || state[SDL_SCANCODE_W])
@@ -26,10 +26,22 @@ void	ft_sdl_event_hook(t_m *m)
 	if (state[SDL_SCANCODE_RIGHT] || state[SDL_SCANCODE_D])
 		ft_turn_right(m, mult);
 	if (state[SDL_SCANCODE_1])
-		m->flags[FIRE] = 1;
+		m->torch.status = TRUE;
 	if (state[SDL_SCANCODE_2])
-		m->flags[FIRE] = 0;
-	printf("map[%f][%f]: %d\n", m->p.pos.x, m->p.pos.y, m->map.arr[(int)(m->p.pos.x)][(int)m->p.pos.y]);
+		m->torch.status = FALSE;
+	if (state[SDL_SCANCODE_KP_PLUS])
+	{
+		m->music.volume = m->music.volume >= 128 ? 128 : m->music.volume + 1;
+		Mix_VolumeMusic(m->music.volume);
+	}
+	if (state[SDL_SCANCODE_KP_MINUS])
+	{
+		m->music.volume = m->music.volume <= 0 ? 0 : m->music.volume - 1;
+		Mix_VolumeMusic(m->music.volume);
+	}
+	printf("map[%d][%d]: %d\n", (int)m->p.pos.x, (int)m->p.pos.y, m->map.arr[(int)(m->p.pos.x)][(int)m->p.pos.y]);
+//	printf("dirX: %f\ndirY: %f\n", m->p.dir.x, m->p.dir.y);
+//	printf("Volume lvl: [%d]\n", m->music.volume);
 	m->flags[REDRAW] = 1;
 //		else if (wnd_event.type == SDL_KEYDOWN)
 //		{

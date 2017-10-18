@@ -6,10 +6,10 @@ void	ft_bzero_2d_arr(int row, int col, int **arr)
 	int j;
 
 	i = 0;
-	while(i < row)
+	while (i < row)
 	{
 		j = 0;
-		while(j < col)
+		while (j < col)
 		{
 			arr[i][j] = 0;
 			j++;
@@ -23,13 +23,13 @@ int		**ft_create_2d_int_arr(int row, int col)
 	int **arr;
 	int i;
 
-	arr = malloc(row * sizeof(int *) + 1);
+	arr = malloc(row * sizeof(int *));
 	i = 0;
-	while(i < col)
+	while (i < row)
 	{
-		arr[i] = malloc(col * sizeof(int) + 1);
-		if(arr[i] == NULL)
-			perror("Failed allocate memory 2d array");
+		arr[i] = malloc(col * sizeof(int));
+		if (arr[i] == NULL)
+			perror("Failed allocate memory 2d array\n");
 		i++;
 	}
 	arr[row] = NULL;
@@ -42,10 +42,10 @@ void	print_int_2d_arr(int row, int col, int **arr)
 	int j;
 
 	i = 0;
-	while(i < row)
+	while (i < row)
 	{
 		j = 0;
-		while(j < col)
+		while (j < col)
 		{
 			printf("%d ", arr[i][j]);
 			j++;
@@ -54,4 +54,3 @@ void	print_int_2d_arr(int row, int col, int **arr)
 		i++;
 	}
 }
-
