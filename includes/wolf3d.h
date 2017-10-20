@@ -28,7 +28,8 @@ enum e_game
 {
 	START,
 	OVER,
-	EXIT
+	EXIT,
+	OPEN
 };
 typedef struct s_wnd	t_wnd;
 typedef struct s_disp	t_disp;
@@ -226,6 +227,11 @@ struct s_audio
 	Mix_Music	*audio;
 	Mix_Chunk	*screamer;
 	Mix_Chunk	*wound;
+	Mix_Chunk	*lock;
+	Mix_Chunk	*open;
+	Mix_Chunk	*crow;
+	Mix_Chunk	*event;
+	Mix_Chunk	*walk;
 };
 
 struct s_m
@@ -245,7 +251,8 @@ struct s_m
 	t_torch_time	torch;
 	t_time			time;
 	SDL_Texture     *scream;
-	SDL_Texture     *crash;
+	SDL_Texture     *msg;
+	SDL_Texture     *open;
 	t_audio			music;
 	int 			h_m_thh;
 };
@@ -253,10 +260,11 @@ struct s_m
 int			ft_read_map(t_m *m, char *f_name);
 
 void		ft_main_loop(t_m *m);
-void		ft_move_forward(t_m *m, int mult);
-void		ft_move_back(t_m *m, int mult);
-void		ft_turn_left(t_m *m, int mult);
-void		ft_turn_right(t_m *m, int mult);
+void		ft_move_forward(t_m *m, double mult);
+void		ft_move_back(t_m *m, double mult);
+void		ft_turn_left(t_m *m, double mult);
+void		ft_turn_right(t_m *m, double mult);
+void		ft_do_action(t_m *m);
 void		ft_calc_img(t_m *m);
 
 void		ft_sdl_update_window(t_m *m);
@@ -271,7 +279,7 @@ void		ft_sdl_put_uint32(SDL_Surface *img, int x, int y, Uint32 color);
 void		ft_sdl_put_pixel(SDL_Surface *img, int x, int y, SDL_Color color);
 SDL_Rect	ft_sdl_set_rect(int x, int y, int w, int h);
 char		*ft_load_file(const char *f_name);
-void		ft_combo_sort(int *order, double *dist, int amount);
+void		ft_combo_sort(int *order, double *dist, int size);
 
 void		ft_exit(t_m *m);
 void		ft_error(int error);

@@ -27,7 +27,7 @@ void	ft_torch(t_m * m)
 	}
 }
 
-void	ft_get_torch(t_sprite_in *lst, t_v2f pos, t_torch_time *torch)
+void	ft_get_drop(t_sprite_in *lst, t_v2f pos, t_torch_time *torch, int *flags)
 {
 	int i;
 
@@ -38,7 +38,13 @@ void	ft_get_torch(t_sprite_in *lst, t_v2f pos, t_torch_time *torch)
 		{
 			torch->status = TRUE;
 			lst[i].visible = FALSE;
-			torch->hp = (int)fmin(100, torch->hp + 50);
+			torch->hp = (int)fmin(100, torch->hp + 25);
+			break ;
+		}
+		else if (lst[i].texture == 11 && lst[i].visible == TRUE &&((int)lst[i].x == (int)pos.x && (int)lst[i].y == (int)pos.y))
+		{
+			flags[KEY]= TRUE;
+			lst[i].visible = FALSE;
 			break ;
 		}
 		i++;
@@ -61,7 +67,7 @@ void	ft_torch_time(t_wnd wnd, t_torch_time *torch, double fps)
 		SDL_RenderCopy(wnd.p_rend, torch->spark, NULL, &dst);
 	}
 	torch->count += 1 / fps;
-	if (torch->count >= 500 && torch->hp > 0)
+	if (torch->count >= 400 && torch->hp > 0)
 	{
 		torch->hp--;
 		torch->count = 0;
@@ -70,8 +76,26 @@ void	ft_torch_time(t_wnd wnd, t_torch_time *torch, double fps)
 	}
 }
 
+void	ft_sound_event(t_v2f pos, t_audio audio, int *flags)
+{
+	if (flags[CROW] == TRUE && (int)pos.x == 13 && (int)pos.y == 5)
+	{
+		Mix_VolumeChunk(audio.crow, MIX_MAX_VOLUME / 2);
+		Mix_PlayChannel(3, audio.crow, 0);
+		flags[CROW] = FALSE;
+	}
+	if (flags[KEY] == FALSE && (int)pos.x == 4 && (int)pos.y == 1)
+		Mix_PlayChannel(3, audio.event, 0);
+	if (flags[WALK] == TRUE && (int)pos.x == 18 && (int)pos.y == 7)
+	{
+		Mix_PlayChannel(3, audio.walk, 0);
+		flags[WALK] = FALSE;
+	}
+}
+
 void	ft_event_manager(t_m *m)
 {
+	ft_sound_event(m->p.pos, m->music, m->flags);
 	if (m->flags[SCREAM] == 1 && (int)m->p.pos.x == 8 && (int)m->p.pos.y == 11)
 	{
 		Mix_PauseMusic();
@@ -91,30 +115,17 @@ void	ft_event_manager(t_m *m)
 	if (m->torch.hp == 0)
 	{
 		m->p.count += (1 / m->time.fps);
-		if (m->p.count > 2000)
+		if (m->p.count > 4000)
 		{
 			m->p.hp -= 5;
 			m->p.count = 0;
-			Mix_PlayChannel(3, m->music.wound, 0);
+			Mix_PlayChannel(4, m->music.wound, 0);
 		}
 		if (m->p.hp <= 0)
 			m->flags[GAME] = OVER;
 	}
 	SDL_SetTextureAlphaMod(m->p.wound, (Uint8)(255 * (100 - m->p.hp) / 100.0));
 	SDL_RenderCopy(m->wnd.p_rend, m->p.wound, NULL, NULL);
-	////TODO CREATE DIFFERENT BG FOR TORCH STATUS
-//	if (m->torch.status == FALSE && m->music.status != 2)
-//	{
-//		Mix_Pause(1);
-//		Mix_PlayMusic(m->music.audio2, 2);
-//		m->music.status = 2;
-//	}
-//	if (m->torch.status == TRUE && m->music.status != 1)
-//	{
-//		Mix_Pause(2);
-//		Mix_Resume(1);
-//		m->music.status = 1;
-//	}
 }
 
 
@@ -134,29 +145,58 @@ double	*ft_recalc_disp_size(t_wnd *wnd, double *zbuf)
 	return (zbuf);
 }
 
-void	ft_draw_hp_bar(t_m *m)
+void	ft_draw_bar(t_m *m)
 {
 	SDL_Rect dst;
 	dst = ft_sdl_set_rect(m->wnd.w - (int)(m->wnd.w * 0.07), m->wnd.h - (int)(m->wnd.h * 0.07), (int)(m->wnd.w * 0.05), (int)(m->wnd.h * 0.05));
 	SDL_RenderCopy(m->wnd.p_rend, m->p.heart, NULL, &dst);
 	ft_sdl_draw_text(&m->wnd, m->font, ft_itoa(m->p.hp), (t_v2d){(int)(m->wnd.w - (m->wnd.w * 0.05)), (int)(m->wnd.h - (m->wnd.h * 0.05))});
+	if (m->flags[KEY])
+	{
+		dst = ft_sdl_set_rect((int)(m->wnd.w * 0.01), m->wnd.h /2 , (int)(m->wnd.w * 0.1), (int)(m->wnd.h * 0.1));
+		SDL_RenderCopy(m->wnd.p_rend, m->tex.buf[11], NULL, &dst);
+	}
 }
 
 void	ft_torch_event(t_m *m)
 {
 	ft_torch(m);
 	ft_torch_time(m->wnd, &m->torch, m->time.fps);
-	ft_get_torch(m->sprite.in, m->p.pos, &m->torch);
+	ft_get_drop(m->sprite.in, m->p.pos, &m->torch, m->flags);
 }
 
-void	ft_game_over(t_m *m)
+void	ft_end_game(t_m *m)
 {
 	if (m->flags[GAME] == OVER)
 	{
 		SDL_RenderCopy(m->wnd.p_rend, m->p.die, NULL, NULL);
 		SDL_RenderCopy(m->wnd.p_rend, m->p.wound, NULL, NULL);
+	}
+	else if (m->flags[GAME] == OPEN)
+	{
+		Mix_PlayChannel(3, m->music.open, 0);
+		SDL_RenderCopy(m->wnd.p_rend, m->open, NULL, NULL);
+	}
+	if (m->flags[GAME] == OVER || m->flags[GAME] == OPEN)
+	{
 		SDL_RenderPresent(m->wnd.p_rend);
 		SDL_Delay(5000);
+	}
+}
+
+void	ft_put_msg_to_screen(t_m *m)
+{
+	static int count = 0;
+
+	if (m->flags[MSG] == TRUE && count < 500)
+	{
+		SDL_RenderCopy(m->wnd.p_rend, m->msg, NULL, NULL);
+		count += (int)(1 / m->time.fps);
+	}
+	else if (count > 500)
+	{
+		m->flags[MSG] = FALSE;
+		count = 0;
 	}
 }
 
@@ -172,10 +212,11 @@ void	ft_main_loop(t_m *m)
 		ft_fps(m);
 		ft_torch_event(m);
 		ft_event_manager(m);
-		ft_draw_hp_bar(m);
+		ft_put_msg_to_screen(m);
+		ft_draw_bar(m);
 		SDL_RenderPresent(m->wnd.p_rend);
 		ft_event_manager(m);
 		ft_sdl_event_hook(m);
 	}
-	ft_game_over(m);
+	ft_end_game(m);
 }

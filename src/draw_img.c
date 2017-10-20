@@ -6,7 +6,7 @@
 
 void	ft_calc_ray_posdir(t_m *m, int x)
 {
-	m->cam.camera_x = 2 * x / (double)m->wnd.w - 1;
+	m->cam.camera_x = (2 * x / (double)m->wnd.w - 1);
 	m->rc.dir.x = m->p.dir.x + m->cam.plane_x * m->cam.camera_x;
 	m->rc.dir.y = m->p.dir.y + m->cam.plane_y * m->cam.camera_x;
 }
@@ -81,7 +81,7 @@ int		ft_calc_wall_dist(t_m *m)
 
 void	ft_calc_line_h(t_m *m)
 {
-	m->main_draw.h = (int)(m->wnd.h / m->rc.wall_dist);
+	m->main_draw.h = (int)(m->wnd.h / m->rc.wall_dist) + 100;
 }
 
 void 	ft_calc_line_start(t_m *m)
@@ -101,7 +101,7 @@ void	ft_calc_line_end(t_m *m)
 void	ft_get_texture_num(t_m *m)
 {
 		if((m->main_draw.tex_num = m->map.arr[m->rc.map_x][m->rc.map_y] - 1) >= TXTR_SIZE)
-			m->main_draw.tex_num = 8;
+			m->main_draw.tex_num = 0;
 }
 
 void	ft_calc_walx(t_m *m)
@@ -172,7 +172,7 @@ void	ft_sort_sprite(t_m *m)
 	while (i < SPRITE_SIZE)
 	{
 		m->sprite.order[i] = i;
-		m->sprite.dist[i] = (m->p.pos.x - m->sprite.in[i].x) * (m->p.pos.x - m->sprite.in[i].x)+ (m->p.pos.y - m->sprite.in[i].y) * (m->rc.pos.y - m->sprite.in[i].y);
+		m->sprite.dist[i] = (m->p.pos.x - m->sprite.in[i].x) * (m->p.pos.x - m->sprite.in[i].x) + (m->p.pos.y - m->sprite.in[i].y) * (m->rc.pos.y - m->sprite.in[i].y);
 		i++;
 	}
 	ft_combo_sort(m->sprite.order, m->sprite.dist, SPRITE_SIZE);
@@ -202,12 +202,12 @@ void	ft_calc_sprite(t_m *m)
 		m->sprite_draw.trans_x = m->sprite_draw.inv_det * (m->p.dir.y * m->sprite_draw.sprite_x - m->p.dir.x * m->sprite_draw.sprite_y);
 		m->sprite_draw.trans_y = m->sprite_draw.inv_det * (-m->cam.plane_y * m->sprite_draw.sprite_x + m->cam.plane_x * m->sprite_draw.sprite_y);
 
-		if (m->sprite.in[m->sprite.order[i]].texture != 10 && fabs(m->sprite_draw.trans_y) < 3 && m->torch.status)
+		if (m->sprite.in[m->sprite.order[i]].texture != 10 && m->sprite.in[m->sprite.order[i]].texture != 11 && fabs(m->sprite_draw.trans_y) < 3 && m->torch.status)
 		{
 			i++;
 			continue ;
 		}
-		if (m->sprite.in[m->sprite.order[i]].texture != 10 && fabs(m->sprite_draw.trans_y) < 1.5)
+		if (m->sprite.in[m->sprite.order[i]].texture != 10 && m->sprite.in[m->sprite.order[i]].texture != 11 && fabs(m->sprite_draw.trans_y) < 1.5)
 		{
 			i++;
 			continue ;
@@ -237,7 +237,7 @@ void	ft_calc_sprite(t_m *m)
 		//FIXME replace 256 to size texture;
 		for (int stripe = m->sprite_draw.start_x; stripe < m->sprite_draw.end_x; stripe++)
 		{
-			m->sprite_draw.tex_x = (int)((256 * (stripe - (-m->sprite_draw.width / 2 + m->sprite_draw.screen_x)) * 256 / m->sprite_draw.width) / 256);
+			m->sprite_draw.tex_x = ((256 * (stripe - (-m->sprite_draw.width / 2 + m->sprite_draw.screen_x)) * 256 / m->sprite_draw.width) / 256);
 			if (m->sprite_draw.trans_y > 0 && m->sprite_draw.end_x < m->wnd.w && m->sprite_draw.trans_y < m->sprite.zbuff[stripe])
 			{
 				d = (m->sprite_draw.start_y - vMoveScreen) * m->tex.h - m->wnd.h * m->tex.half + m->sprite_draw.height * m->tex.half;

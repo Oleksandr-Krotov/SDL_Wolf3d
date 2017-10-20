@@ -16,14 +16,14 @@ void	ft_swap(int *a, int *b)
 	*b = tmp;
 }
 
-void	ft_combo_sort(int *order, double *dist, int amount)
+void	ft_combo_sort(int *order, double *dist, int size)
 {
 	int gap;
 	int swapped;
 	int i;
 	int j;
 
-	gap = amount;
+	gap = size;
 	swapped = 0;
 	while (gap > 1 || swapped)
 	{
@@ -34,7 +34,7 @@ void	ft_combo_sort(int *order, double *dist, int amount)
 			gap = 1;
 		swapped = 0;
 		i = 0;
-		while (i < amount - gap)
+		while (i < size - gap)
 		{
 			j = i + gap;
 			if (dist[i] < dist[j])
