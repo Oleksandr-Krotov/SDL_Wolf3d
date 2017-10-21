@@ -41,7 +41,7 @@ void	ft_sdl_event_hook(t_m *m)
 		m->music.volume = m->music.volume <= 0 ? 0 : m->music.volume - 1;
 		Mix_VolumeMusic(m->music.volume);
 	}
-	printf("map[%d][%d]: %d\n", (int)m->p.pos.x, (int)m->p.pos.y, m->map.arr[(int)(m->p.pos.x)][(int)m->p.pos.y]);
+//	printf("map[%d][%d]: %d\n", (int)m->p.pos.x, (int)m->p.pos.y, m->map.arr[(int)(m->p.pos.x)][(int)m->p.pos.y]);
 //	printf("dirX: %f\ndirY: %f\n", m->p.dir.x, m->p.dir.y);
 //	printf("Volume lvl: [%d]\n", m->music.volume);
 	m->flags[REDRAW] = 1;

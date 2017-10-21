@@ -1,8 +1,8 @@
 #include "wolf3d.h"
 
-void	ft_init_sdl(void)
+void	ft_init_sdl()
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
+	if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
 	{
 		printf("SDL could not init. SDL Err: %s\n", SDL_GetError());
 		ft_error(2);
@@ -122,8 +122,7 @@ void	ft_init_sound(t_m *m)
 	m->music.walk = Mix_LoadWAV("assets/sounds/gravelwalk.wav");
 	if (m->music.audio == NULL)
 	{
-		SDL_Log( "Couldn't load 1.mp3: %s\n",
-				SDL_GetError());
+		SDL_Log( "Couldn't load 1.mp3: %s\n", SDL_GetError());
 		ft_exit(m);
 	}
 	m->music.volume = MIX_MAX_VOLUME / 4;
@@ -155,13 +154,13 @@ void	ft_init(t_m *m)
 	ft_init_cam(m);
 	m->time.cur = 0;
 	m->time.old = 0;
-	SDL_PauseAudio(0);
+//	SDL_PauseAudio(0);
 }
 
 int		main(int argc, char *argv[])
 {
 	t_m	m;
-	if (argc == 1)
+	if (argc > 2)
 		ft_error(1);
 	ft_read_map(&m, argv[1]);
 	ft_init(&m);

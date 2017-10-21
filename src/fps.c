@@ -22,7 +22,7 @@ void	ft_fps_to_screen(t_m *m)
 		sum = 0;
 	}
 	ft_sdl_draw_text(&m->wnd, m->font, ft_itoa((int)(1 / mid)), (t_v2d){5, 5});
-	printf("fps: %d\n", (int)(1 / mid));
+//	printf("fps: %d\n", (int)(1 / mid));
 }
 
 void	ft_fps(t_m *m)

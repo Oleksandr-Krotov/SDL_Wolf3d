@@ -7,6 +7,8 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <math.h>
+#include <time.h>
 #include <SDL2/SDL.h>
 #if __APPLE__
 #include <SDL2_ttf/SDL_ttf.h>
@@ -16,8 +18,6 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
 #endif
-#include <math.h>
-#include <time.h>
 
 #include "libft.h"
 #include "define.h"
