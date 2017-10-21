@@ -66,9 +66,8 @@ void	ft_fill_arr(t_m *m, char *src)
 		{
 			if (*src == 'S')
 			{
-				if (i == 0 && i == m->map.row - 1)
-					ft_error(15);
-				if (j == 0 || j == m->map.col - 1)
+				if (i == 0 || i == m->map.row - 1 ||
+					j == 0 || j == m->map.col - 1)
 					ft_error(15);
 				m->map.start.x = j;
 				m->map.start.y = i;

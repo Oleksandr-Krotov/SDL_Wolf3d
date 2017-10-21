@@ -26,4 +26,9 @@
 #define TORCH 0
 #define FREE 1
 #define OUTFIT 2
+
+#define T_MSG 500
+#define T_HP 12000
+#define T_TORCH 2000
+#define T_ANIM 400
 #endif

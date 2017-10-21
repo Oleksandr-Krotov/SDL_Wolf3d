@@ -19,8 +19,8 @@ void	ft_ttf_init(t_m *m)
 
 void	ft_init_player(t_m *m)
 {
-	m->p.pos.y = m->map.start.x;
-	m->p.pos.x = m->map.start.y;
+	m->p.pos.y = m->map.start.x + 0.5;
+	m->p.pos.x = m->map.start.y + 0.5;
 	m->p.dir.x = -1;
 	m->p.dir.y = 0;
 	if ((m->p.arm[TORCH].texture = IMG_LoadTexture(m->wnd.p_rend, "assets/textures/torch.png")) == NULL)

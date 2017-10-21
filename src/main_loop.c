@@ -15,7 +15,7 @@ void	ft_torch(t_m * m)
 		i += 1 / m->time.fps;
 		step_x = 183;
 		step_y = 191;
-		if (i >= 200)
+		if (i >= T_ANIM)
 		{
 			num_x = rand() % 4;
 			num_y = rand() % 2;
@@ -67,7 +67,7 @@ void	ft_torch_time(t_wnd wnd, t_torch_time *torch, double fps)
 		SDL_RenderCopy(wnd.p_rend, torch->spark, NULL, &dst);
 	}
 	torch->count += 1 / fps;
-	if (torch->count >= 400 && torch->hp > 0)
+	if (torch->count >= T_TORCH && torch->hp > 0)
 	{
 		torch->hp--;
 		torch->count = 0;
@@ -105,6 +105,7 @@ void	ft_event_manager(t_m *m)
 	}
 	else if (m->flags[SCREAM] == 2 && (int)m->p.pos.x == 8 && (int)m->p.pos.y == 11)
 	{
+		m->p.dir.x = -m->p.dir.x;
 		Mix_PlayChannel(3, m->music.screamer, 0);
 		SDL_Delay(2000);
 		m->p.hp = (int)fmax(0, m->p.hp - 10);
@@ -115,7 +116,7 @@ void	ft_event_manager(t_m *m)
 	if (m->torch.hp == 0)
 	{
 		m->p.count += (1 / m->time.fps);
-		if (m->p.count > 4000)
+		if (m->p.count > T_HP)
 		{
 			m->p.hp -= 5;
 			m->p.count = 0;
@@ -188,12 +189,12 @@ void	ft_put_msg_to_screen(t_m *m)
 {
 	static int count = 0;
 
-	if (m->flags[MSG] == TRUE && count < 500)
+	if (m->flags[MSG] == TRUE && count < T_MSG)
 	{
 		SDL_RenderCopy(m->wnd.p_rend, m->msg, NULL, NULL);
 		count += (int)(1 / m->time.fps);
 	}
-	else if (count > 500)
+	else if (count > T_MSG)
 	{
 		m->flags[MSG] = FALSE;
 		count = 0;

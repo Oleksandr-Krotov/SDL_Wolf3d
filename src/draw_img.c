@@ -278,7 +278,7 @@ void	ft_calc_img(t_m *m)
 		ft_calc_walx(m);
 		ft_calc_tex_x(m);
 		ft_draw_line(m, x);
-		x++;
+		x += 2;
 	}
 	ft_sort_sprite(m);
 	ft_calc_sprite(m);
