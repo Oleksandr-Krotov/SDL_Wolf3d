@@ -1,36 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fps.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrotov <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/28 12:21:03 by akrotov           #+#    #+#             */
+/*   Updated: 2017/10/28 12:21:04 by akrotov          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <wolf3d.h>
+#include "fps.h"
 
-double	ft_get_fps(t_m *m)
+double	ft_smooth_delta(double old, double current)
 {
-	m->time.old = m->time.cur;
-	m->time.cur = SDL_GetTicks();
-	return ((m->time.cur - m->time.old) / 1000.0);
+	return (current * SMOOTH) + (old) * (1.0 - SMOOTH);
 }
 
-void	ft_fps_to_screen(t_m *m)
+void	ft_fps(t_time *time)
 {
-	static int		i;
-	static double	mid = 25;
-	static double	sum;
+	time->old = time->current;
+	time->current = clock();
+	time->current = ft_smooth_delta(time->old, time->current);
+	time->delta = ((time->current - time->old) / CLOCKS_PER_SEC);
+	time->fps = (int)(1 / time->delta);
+}
 
-	sum += m->time.fps;
-	i++;
-	if (i >= 25)
+int		ft_counter(int *storage, int fps, int limit)
+{
+	*storage += fps;
+	if (*storage >= limit)
 	{
-		mid = sum / i;
-		i = 0;
-		sum = 0;
+		*storage = 0;
+		return (1);
 	}
-	ft_sdl_draw_text(&m->wnd, m->font, ft_itoa((int)(1 / mid)), (t_v2d){5, 5});
-//	printf("fps: %d\n", (int)(1 / mid));
-}
-
-void	ft_fps(t_m *m)
-{
-	m->time.fps = ft_get_fps(m);
-	if (m->time.fps < 0.015)
-		m->time.fps = 0.015;
-	ft_fps_to_screen(m);
-	m->p.ms = m->time.fps;
-	m->p.rs = m->time.fps;
+	else
+		return (0);
 }

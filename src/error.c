@@ -1,38 +1,34 @@
-#include "wolf3d.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akrotov <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/10/28 12:20:50 by akrotov           #+#    #+#             */
+/*   Updated: 2017/10/28 12:20:51 by akrotov          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void	ft_error(int error)
+#include "error.h"
+
+void	ft_error(int err)
 {
-	if (error == 1)
-		perror("Bad number of arguments!\nWolf3d work only with one!");
-	else if (error == 2)
-		perror("Failed initialisation SDL\n");
-	else if (error == 3)
-		SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer");
-	else if (error == 4)
-		perror("Failed init SDL_surface\n");
-	else if (error == 5)
-		perror("Failed load texture\n");
-	else if (error == 6)
-		perror("Can't read this map!\n");
-	else if (error == 7)
+	if (err == ERR_MEM_ALLOC)
+		perror("Couldn't allocate memory!\n");
+	else if (err == ERR_OPEN_FILE)
+		perror("Couldn't open file!\n");
+	else if (err == 7)
 		perror("Bad map width! Example: \"W:10\"\n");
-	else if (error == 8)
+	else if (err == 8)
 		perror("Bad map height! Example: \"H:10\"\n");
-	else if (error == 9)
-		perror("Cant't find map start_y! Example: \"Map: \"\n");
-	else if (error == 10)
-		perror("Empty map!\n");
-	else if (error == 11)
-		perror("Map size not equal to a given value or empty place at the edges of map!\n");
-	else if (error == 12)
-		perror("Map size not equal to a given value!\n");
-	else if (error == 13)
-		perror("Can't searched starting position!\n");
-	else if (error == 14)
-		perror("SDL can't update window!!!\n");
-	else if (error == 15)
-		perror("Start position at the edges of map!\n");
-	else if (error == 16)
+	else if (err == 10)
 		perror("Map size more than 1000\n");
-	exit(error);
+	else if (err == 11)
+		perror("To much small map! Min size: 3x3\n");
+	else if (err == 12)
+		perror("Cant't find map start! Example: \"Map: \"\n");
+	else if (err == 13)
+		perror("Start position at the edges of map!\n");
+	exit(err);
 }
