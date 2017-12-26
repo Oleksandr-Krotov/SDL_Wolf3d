@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf3d.h>
+#include "wolf3d.h"
 
 void	ft_free_sound_start(t_start *scene)
 {

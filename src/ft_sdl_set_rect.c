@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf3d.h>
+#include "wolf3d.h"
 
 SDL_Rect	ft_sdl_set_rect(int x, int y, int w, int h)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf3d.h>
+#include "wolf3d.h"
 
 void	ft_set_start_stage(t_start *scene)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <wolf3d.h>
+#include "wolf3d.h"
 #include "fps.h"
 
 double	ft_smooth_delta(double old, double current)
